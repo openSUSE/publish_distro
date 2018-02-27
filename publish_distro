@@ -110,7 +110,7 @@ for flavor in "${flavors[@]}"; do
 		do_sync_isos=0
 		break
 	fi
-	if [ ! -n "$changes" ]; then
+	if [ -n "$changes" ]; then
 		if [ ! -s "$changes" ]; then
 			echo "generating $changes" | tee -a $synclog
 			[ -z "$dryrun" ] || changes=/dev/stdout
