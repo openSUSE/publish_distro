@@ -80,7 +80,13 @@ if [ -n "$do_cleanup" ]; then
 	test -n "$deletelog" || exit 1
 	(
 	df -h /srv
-	for i in $(awk '/\*deleting   .*/ { print $2}' $deletelog ); do $dryrun rm -rvf "$dest/$i"; done 
+	for i in $(awk '/\*deleting   .*/ { print $2}' $deletelog ); do
+		if [ -e "$stage/$i" ]; then
+			echo "WARNING: $i still exist in stage, not deleting"
+		else
+			$dryrun rm -rvf "$dest/$i"
+		fi
+	done
 	df -h /srv
 	) > $deletelog-deleted
 	exit 0
