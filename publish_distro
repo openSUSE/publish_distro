@@ -70,7 +70,7 @@ stage="/srv/ftp-stage/pub/opensuse/$path"
 dest="/srv/ftp/pub/opensuse/$path"
 
 if [ ! -e "$stage" -o ! -e "$dest" ]; then
-	echo "stage and/or dest doesn't exist" >&2
+	echo "stage ($stage) and/or dest ($dest) doesn't exist" >&2
 	exit 1
 fi
 
