@@ -45,23 +45,30 @@ get_changes_filename() {
 	exit 1
 }
 
-while true; do
-    if [ "$1" == '--force' ]; then
-	force=1
-	shift
-	continue
-    elif [ "$1" == '--cleanup' ]; then
-	do_cleanup=1
-	date="3 days ago"
-	shift
-	continue
-    elif [ "$1" == '--dry' ]; then
-	dryrun=echo
-	shift
-	continue
-    fi
-    break
+# --dry and --cleanup should not be passed to rsync through $@
+# config file and possibly other opts including --force need to be
+for arg do
+  shift
+  if [ "$arg" == '--force' ]; then
+        force=1
+        newargs+=("arg")
+        shift
+        continue
+  elif [ "$arg" == '--dry' ]; then
+        dryrun=echo
+        shift
+        continue
+   elif [ "$arg" == '--cleanup' ]; then
+        do_cleanup=1
+        date="90 days ago"
+        continue
+  else
+        newargs+=("$arg")
+  fi
 done
+
+# set newargs as $@
+set -- "${newargs[@]}"
 
 . "$1" || { echo "need to specify config file" >&2; exit 1; }
 shift
