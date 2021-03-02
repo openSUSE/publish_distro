@@ -51,7 +51,7 @@ for arg do
   shift
   if [ "$arg" == '--force' ]; then
         force=1
-        newargs+=("arg")
+        newargs+=("$arg")
         shift
         continue
   elif [ "$arg" == '--dry' ]; then
